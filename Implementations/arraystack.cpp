@@ -23,11 +23,11 @@ protected:
 public:
     ArrayStack() : a(1), n(0) {}
 
-    int size() override { 
+    int size() const override { 
         return n; 
     }
 
-    T get(int i) override { 
+    T get(int i) const override { 
         if (i < 0 || i >= n) throw std::out_of_range("Index out of bounds");
         return a.a[i]; 
     }
