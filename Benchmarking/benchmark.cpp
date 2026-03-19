@@ -3,6 +3,7 @@
 #include <string>
 #include "../Implementations/arraystack.cpp"
 #include "../Implementations/sll_queue.cpp"
+#include "../Implementations/dll_list.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 1000) {
@@ -46,6 +47,30 @@ void benchmarkSLLQueue() {
     }
 }
 
+void benchmarkDLList() {
+    for (int N = 1000; N <= 1000000; N += 1000) {
+
+        DLList<int> list;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // add N elements to the back
+        for (int i = 0; i < N; ++i) {
+            list.add(i, i);
+        }
+
+        // remove all N elements from the front
+        for (int i = 0; i < N; ++i) {
+            list.remove(0);
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }    
+}
+
 int main(int argc, char* argv[]) {
     // 1. Ensure an argument was provided
     if (argc < 2) {
@@ -63,6 +88,9 @@ int main(int argc, char* argv[]) {
     } 
     else if (adt_choice == "SLLQueue") {
         benchmarkSLLQueue();
+    }
+    else if (adt_choice == "DLList") {
+        benchmarkDLList();
     }
     else {
         // If Python sends a name we haven't built yet, throw an error
