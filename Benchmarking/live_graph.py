@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.ticker as ticker
 import tkinter as tk
+import os
 
 # -----------------------------------------------------------------------
 # ADT options — add new ones here as you implement them
@@ -12,11 +13,13 @@ import tkinter as tk
 ADT_OPTIONS = {
     "Array Stack":  "ArrayStack",
     "SLL Queue":    "SLLQueue",
+    "DL List":     "DLList",
 }
 
 ADT_TITLES = {
     "ArrayStack":   "Array Stack: Bulk Push Performance",
     "SLLQueue":     "SLL Queue: Enqueue + Dequeue Performance",
+    "DLList":      "DL List: Add + Remove Full Cycle",
 }
 
 APP_BG      = '#F8FAFC'
@@ -35,7 +38,6 @@ BTN_HOVER   = '#7C3AED'
 def show_selector():
     """Opens a popup window with buttons for each ADT. Returns the chosen ADT key."""
 
-
     root = tk.Tk()
     chosen = tk.StringVar(value="")
 
@@ -43,8 +45,8 @@ def show_selector():
     root.configure(bg=APP_BG)
     root.resizable(False, False)
 
-    # center the window
-    window_width, window_height = 360, 280
+    # center the window — height increased to 320 to fit 3 buttons
+    window_width, window_height = 360, 320
     screen_width  = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width  // 2) - (window_width  // 2)
@@ -100,11 +102,10 @@ if not adt_choice:
     exit(0)
 
 # run benchmark.exe and pipe its output into this script
-import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 process = subprocess.Popen(
-    [os.path.join(BASE_DIR, "benchmark.exe"), adt_choice],  # ← always finds it
+    [os.path.join(BASE_DIR, "benchmark.exe"), adt_choice],
     stdout=subprocess.PIPE,
     stderr=subprocess.PIPE,
     text=True
@@ -113,7 +114,6 @@ process = subprocess.Popen(
 # -----------------------------------------------------------------------
 # Graph setup
 # -----------------------------------------------------------------------
-import matplotlib.pyplot as plt
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = ['Century Gothic', 'Trebuchet MS', 'Arial Rounded MT Bold', 'sans-serif']
 
@@ -141,8 +141,8 @@ fill_poly = None
 line, = ax.plot([], [], color=LINE_COLOR, linewidth=3)
 
 def init():
-    ax.set_xlim(0, 1100000)   # ← give a little extra room on the right
-    ax.set_ylim(0, 0.006)     # ← raise the ceiling to fit the spikes
+    ax.set_xlim(0, 1100000)
+    ax.set_ylim(0, 0.006)
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{int(x):,}'))
     return line,
 
@@ -166,7 +166,7 @@ def update(frame):
 
             line.set_data(x_data, y_data)
 
-            ax.set_ylim(0, max(y_data) * 1.2)  # ← adds 20% headroom above the highest point
+            ax.set_ylim(0, max(y_data) * 1.2)  # auto scale y axis
 
             # only redraw fill every 10 frames to reduce lag
             if len(x_data) % 10 == 0:
@@ -180,7 +180,7 @@ def update(frame):
     return line,
 
 # interval at 50ms (20 FPS) to keep things smooth without lag
-ani = animation.FuncAnimation(fig, update, init_func=init, blit=False, interval=50)
+ani = animation.FuncAnimation(fig, update, init_func=init, blit=False, interval=50, cache_frame_data=False)
 
 plt.tight_layout()
 plt.show()
