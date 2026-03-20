@@ -5,6 +5,8 @@
 #include "../Implementations/sll_queue.cpp"
 #include "../Implementations/dll_list.cpp"
 #include "../Implementations/meldable_heap.cpp"
+#include "../Implementations/skiplist_sset.cpp"
+#include "../Implementations/chained_hash_set.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -88,6 +90,42 @@ void benchmarkMeldableHeap() {
     }
 }
 
+void benchmarkSkiplist() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+        Skiplist<int> set; 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // Add N elements
+        for (int i = 0; i < N; ++i) {
+            set.add(i);
+        }
+        
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
+void benchmarkChainedHashSet() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+        ChainedHashSet<int> set; 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // Add N elements
+        for (int i = 0; i < N; ++i) {
+            set.add(i);
+        }
+        
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
 int main(int argc, char* argv[]) {
     // 1. Ensure an argument was provided
     if (argc < 2) {
@@ -109,10 +147,15 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "DLList") {
         benchmarkDLList();
     }
+  // ... inside main()
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
     }
+    else if (adt_choice == "ChainedHashSet") {
+        benchmarkChainedHashSet();
+    }
     else {
+    // ...
         // If Python sends a name we haven't built yet, throw an error
         std::cerr << "Error: Unknown data structure '" << adt_choice << "'.\n";
         return 1;
