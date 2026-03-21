@@ -128,6 +128,8 @@ To validate the efficiency of the `DLList`, the project includes a specialized b
 ### 5. Observed Performance Characteristics
 Based on benchmark results, the `DLList` exhibits the following behavior:
 
+![DL List Benchmark](./Assets/DLList_Performance.png)
+
 * **Linear growth (0 to ~500,000 elements):** Time increases steadily — `add(i, i)` requires traversal to index `i` each time, so cumulative time grows as O(n²) in total but appears linear per iteration.
 * **Heap fragmentation (500,000 to 800,000 elements):** Each node is individually allocated, scattering memory across the heap. At large N this causes cache misses, OS memory management overhead, and significant spikes.
 * **Comparison with SLLQueue and ArrayStack:**
