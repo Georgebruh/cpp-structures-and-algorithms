@@ -97,6 +97,11 @@ void benchmarkSkiplist() {
         for (int i = 0; i < N; ++i) {
             skiplist.remove(i);
         }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
     }
 }
 
@@ -118,6 +123,11 @@ void benchmarkArrayDeque() {
             deque.removeFirst();
             deque.removeLast();
         }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
     }
 }
   
