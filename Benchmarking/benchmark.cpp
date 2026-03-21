@@ -4,6 +4,7 @@
 #include "../Implementations/arraystack.cpp"
 #include "../Implementations/sll_queue.cpp"
 #include "../Implementations/dll_list.cpp"
+#include "../Implementations/skiplist_sset.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -71,6 +72,34 @@ void benchmarkDLList() {
     }    
 }
 
+void benchmarkSkiplist() {
+    for (int N = 1000; N <= 1000000; N += 1000) {
+        Skiplist<int> skiplist;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // add N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.add(i);
+        }
+
+        // search for all N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.contains(i);
+        }
+
+        // remove all N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.remove(i);
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
 int main(int argc, char* argv[]) {
     // 1. Ensure an argument was provided
     if (argc < 2) {
@@ -92,6 +121,10 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "DLList") {
         benchmarkDLList();
     }
+    else if (adt_choice == "Skiplist") {
+        benchmarkSkiplist();
+    }
+    
     else {
         // If Python sends a name we haven't built yet, throw an error
         std::cerr << "Error: Unknown data structure '" << adt_choice << "'.\n";
