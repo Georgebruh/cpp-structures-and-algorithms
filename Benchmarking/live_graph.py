@@ -14,9 +14,10 @@ import os
 # ADT options — add new ones here as you implement them
 # -----------------------------------------------------------------------
 ADT_OPTIONS = {
-    "Array Stack":       "ArrayStack",
-    "SLL Queue":         "SLLQueue",
-    "DL List":           "DLList",
+    "Array Stack":  "ArrayStack",
+    "SLL Queue":    "SLLQueue",
+    "DL List":     "DLList",
+    "Array Deque":  "ArrayDeque",
     "Meldable Heap":     "MeldableHeap",
     "Skip List":         "Skiplist",
     "Chained Hash Set":  "ChainedHashSet",
@@ -26,6 +27,7 @@ ADT_TITLES = {
     "ArrayStack":       "Array Stack: Bulk Push Performance",
     "SLLQueue":         "SLL Queue: Enqueue + Dequeue Performance",
     "DLList":           "DL List: Add + Remove Full Cycle",
+    "ArrayDeque":   "Array Deque: Both Ends Performance",
     "MeldableHeap":     "Meldable Heap: Enqueue Performance",
     "Skiplist":         "Skip List: Add Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
