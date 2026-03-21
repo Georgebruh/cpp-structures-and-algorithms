@@ -2,13 +2,6 @@
 
 The `ChainedHashSet` is an implementation of the `SSet` (Set) interface using a chained hash table. Unlike the `Skiplist`, this structure does not maintain its elements in any sorted order. Instead, it optimizes for blistering speed, providing constant average-time lookups, insertions, and deletions.
 
-## Theoretical Performance (Theorem 5.1)
-
-This implementation adheres to the performance characteristics outlined in Open Data Structures (Theorem 5.1):
-
-* **Expected Time:** Ignoring the cost of dynamic resizing, the operations `add(x)`, `remove(x)`, and `contains(x)` run in $O(1)$ expected time.
-* **Amortized Resizing:** Beginning with an empty `ChainedHashSet`, any sequence of $m$ `add(x)` and `remove(x)` operations results in a total of $O(m)$ time spent during all calls to `resize()`. This means the amortized cost of resizing per operation is also $O(1)$.
-* **Space Complexity:** The table dynamically shrinks and grows to ensure the space used is always $O(n)$, where $n$ is the number of elements in the set.
 
 ## Implementation Details
 
@@ -117,10 +110,33 @@ graph LR
 
 If you look closely at these diagrams, you can see the two distinct layers of data storage that make up this structure:
 
-The Left Column (The std::vector): This data is stored in contiguous memory. The CPU can instantly jump to table[6] in $O(1)$ time without searching.The Horizontal Rows (The Linked Lists): These nodes are allocated in heap memory using the new keyword. They are scattered randomly in RAM, connected only by their ->next pointers. This allows multiple items to safely share a bucket without overwriting each other.
+The Left Column (The std::vector): This data is stored in contiguous memory. The CPU can instantly jump to table[6] in $O(1)$ time without searching.
+
+The Horizontal Rows (The Linked Lists): These nodes are allocated in heap memory using the new keyword. They are scattered randomly in RAM, connected only by their ->next pointers. This allows multiple items to safely share a bucket without overwriting each other.
 
 
-## Running the Unit Tests
+### 4. Performance Testing and Benchmarking
+To validate the extreme efficiency of the `ChainedHashSet`, the project includes a specialized benchmarking suite. It pipes live execution times from C++ into a Python visualization script (`live_graph.py`) to map out the exact cost of inserting and looking up elements as the dataset scales into the millions.
+
+#### Understanding the Benchmark Graph
+Below is the live performance graph generated during a high-volume stress test of the Hash Set.
+
+<p align="center">
+  <img src="./Assets/CH.png" alt="Chained Hash Set Performance Graph" width="600"/>
+</p>
+
+**What this graph tells us about the code:**
+* **The Flat Trendline ($O(1)$ Time):** The dense, flat baseline of the graph is exactly what we want to see. It visually proves that whether the table has 10 items or 1,000,000 items, the hashing math instantly calculates the memory address. Insertions and lookups happen in expected **$O(1)$ constant time**, completely unaffected by the scale of the data!
+* **The Spikes (Rehashing/Resizing):** You will notice sharp, periodic vertical spikes in execution time. These represent the exact moments the set's "load factor" exceeds 1.0. To maintain that flat $O(1)$ speed, the table is forced to pause, allocate a newly doubled array, and physically re-calculate and re-link *every single existing node* to a new bucket (an expensive $O(n)$ operation). 
+* **The Power of Amortization:** Look at the gaps between the spikes—they get wider and wider as the data grows. Because the capacity strictly *doubles*, the table triggers these massive rehashing operations exponentially less often. When you average that rare $O(n)$ penalty across millions of lightning-fast $O(1)$ operations, the total amortized cost of using the Hash Set remains $O(1)$.
+
+### Running the Unit Tests
+A comprehensive unit test suite verifies the core logic, duplicate prevention, and memory-safe dynamic resizing.
+
+**To compile and run the tests:**
+```bash
+g++ -o Tests/hash_test.exe Tests/chained_hash_set_test.cpp
+./Tests/hash_test.exe
 
 A comprehensive unit test suite verifies the core logic, duplicate prevention, and memory-safe dynamic resizing.
 
