@@ -4,6 +4,7 @@
 #include "../Implementations/arraystack.cpp"
 #include "../Implementations/sll_queue.cpp"
 #include "../Implementations/dll_list.cpp"
+#include "../Implementations/skiplist_sset.cpp"
 #include "../Implementations/array_deque.cpp"
 #include "../Implementations/meldable_heap.cpp"
 #include "../Implementations/skiplist_sset.cpp"
@@ -74,6 +75,27 @@ void benchmarkDLList() {
         std::cout << N << "," << duration.count() << "\n";
     }    
 }
+
+void benchmarkSkiplist() {
+    for (int N = 1000; N <= 1000000; N += 1000) {
+        Skiplist<int> skiplist;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // add N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.add(i);
+        }
+
+        // search for all N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.contains(i);
+        }
+
+        // remove all N elements
+        for (int i = 0; i < N; ++i) {
+            skiplist.remove(i);
+        }
 
 void benchmarkArrayDeque() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -168,6 +190,10 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "DLList") {
         benchmarkDLList();
     }
+    else if (adt_choice == "Skiplist") {
+        benchmarkSkiplist();
+    }
+    
     else if (adt_choice == "ArrayDeque") {
         benchmarkArrayDeque();
         
