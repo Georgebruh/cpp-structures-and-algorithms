@@ -14,12 +14,14 @@ ADT_OPTIONS = {
     "Array Stack":  "ArrayStack",
     "SLL Queue":    "SLLQueue",
     "DL List":     "DLList",
+    "Array Deque":  "ArrayDeque",
 }
 
 ADT_TITLES = {
     "ArrayStack":   "Array Stack: Bulk Push Performance",
     "SLLQueue":     "SLL Queue: Enqueue + Dequeue Performance",
     "DLList":      "DL List: Add + Remove Full Cycle",
+    "ArrayDeque":   "Array Deque: Both Ends Performance",
 }
 
 APP_BG      = '#F8FAFC'
