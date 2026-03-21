@@ -10,6 +10,7 @@
 #include "../Implementations/skiplist_sset.cpp"
 #include "../Implementations/red_black_tree.cpp"
 #include "../Implementations/chained_hash_set.cpp"
+#include "../Implementations/adjacency_matrix.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -182,6 +183,23 @@ void benchmarkChainedHashSet() {
     }
 }
 
+void benchmarkAdjacencyMatrix() {
+    for (int N = 1000; N <= 20000; N += 1000) {
+        AdjacencyMatrix graph(N); 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
+        for (int i = 0; i < N - 1; ++i) {
+            graph.addEdge(i, i + 1);
+        }
+        
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << std::endl;
+    }
+}
+
 int main(int argc, char* argv[]) {
     // 1. Ensure an argument was provided
     if (argc < 2) {
@@ -217,6 +235,9 @@ int main(int argc, char* argv[]) {
     }
     else if (adt_choice == "ChainedHashSet") {
         benchmarkChainedHashSet();
+    }
+    else if (adt_choice == "AdjacencyMatrix") {
+        benchmarkAdjacencyMatrix();
     }
     else {
     // ...
