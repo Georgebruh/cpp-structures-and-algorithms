@@ -3,6 +3,7 @@
 #include <string>
 #include "../Implementations/arraystack.cpp"
 #include "../Implementations/sll_queue.cpp"
+#include "../Implementations/arraydeque_list.cpp"
 #include "../Implementations/dll_list.cpp"
 #include "../Implementations/skiplist_sset.cpp"
 #include "../Implementations/array_deque.cpp"
@@ -43,6 +44,35 @@ void benchmarkSLLQueue() {
         // dequeue all N elements
         while (!queue.isEmpty()) {
             queue.dequeue();
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
+void benchmarkArrayDequeList() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+
+        ArrayDequeList<int> list;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // add N elements
+        for (int i = 0; i < N; ++i) {
+            list.add(i, i);
+        }
+
+        // get all N elements
+        for (int i = 0; i < N; ++i) {
+            list.get(i);
+        }
+
+        // remove all N elements from the front
+        for (int i = 0; i < N; ++i) {
+            list.remove(0);
         }
 
         auto end = std::chrono::high_resolution_clock::now();
@@ -180,6 +210,9 @@ int main(int argc, char* argv[]) {
     } 
     else if (adt_choice == "SLLQueue") {
         benchmarkSLLQueue();
+    }
+    else if (adt_choice == "ArrayDequeList") {
+    benchmarkArrayDequeList();
     }
     else if (adt_choice == "DLList") {
         benchmarkDLList();
