@@ -187,6 +187,9 @@ To validate the efficiency of the `ArrayDequeList`, the project includes a speci
 ### 6. Observed Performance Characteristics
 The `ArrayDequeList` is expected to outperform `DLList` significantly due to cache locality:
 
+![ArrayDeque List Benchmark](./Assets/ArrayDequeList_Performance.png)
+
+
 * **Smooth linear growth:** Since all elements are in one contiguous array, the CPU cache can prefetch data efficiently — far fewer cache misses than DLList.
 * **Reallocation spikes:** When the backing array doubles in size, all elements must be copied to the new array — causing occasional spikes similar to the ArrayStack.
 * **Final comparison of all List implementations:**
