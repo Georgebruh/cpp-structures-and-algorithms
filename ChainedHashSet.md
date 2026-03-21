@@ -122,26 +122,10 @@ To validate the extreme efficiency of the `ChainedHashSet`, the project includes
 Below is the live performance graph generated during a high-volume stress test of the Hash Set.
 
 <p align="center">
-  <img src="./Assets/CH.png" alt="Chained Hash Set Performance Graph" width="600"/>
+  <img src="./Assets/CH.png" alt="Chained Hash Set Performance Graph" width="800"/>
 </p>
 
 **What this graph tells us about the code:**
 * **The Flat Trendline ($O(1)$ Time):** The dense, flat baseline of the graph is exactly what we want to see. It visually proves that whether the table has 10 items or 1,000,000 items, the hashing math instantly calculates the memory address. Insertions and lookups happen in expected **$O(1)$ constant time**, completely unaffected by the scale of the data!
 * **The Spikes (Rehashing/Resizing):** You will notice sharp, periodic vertical spikes in execution time. These represent the exact moments the set's "load factor" exceeds 1.0. To maintain that flat $O(1)$ speed, the table is forced to pause, allocate a newly doubled array, and physically re-calculate and re-link *every single existing node* to a new bucket (an expensive $O(n)$ operation). 
-* **The Power of Amortization:** Look at the gaps between the spikes—they get wider and wider as the data grows. Because the capacity strictly *doubles*, the table triggers these massive rehashing operations exponentially less often. When you average that rare $O(n)$ penalty across millions of lightning-fast $O(1)$ operations, the total amortized cost of using the Hash Set remains $O(1)$.
-
-### Running the Unit Tests
-A comprehensive unit test suite verifies the core logic, duplicate prevention, and memory-safe dynamic resizing.
-
-**To compile and run the tests:**
-```bash
-g++ -o Tests/hash_test.exe Tests/chained_hash_set_test.cpp
-./Tests/hash_test.exe
-
-A comprehensive unit test suite verifies the core logic, duplicate prevention, and memory-safe dynamic resizing.
-
-**To compile and run the tests:**
-```bash
-g++ -o Tests/hash_test.exe Tests/chained_hash_set_test.cpp
-./Tests/hash_test.exe
-```
+* **The Power of Amortization:** Look at the gaps between the spikes, they get wider and wider as the data grows. Because the capacity strictly *doubles*, the table triggers these massive rehashing operations exponentially less often. When you average that rare $O(n)$ penalty across millions of lightning-fast $O(1)$ operations, the total amortized cost of using the Hash Set remains $O(1)$.
