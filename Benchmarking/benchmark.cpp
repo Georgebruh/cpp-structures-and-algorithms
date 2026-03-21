@@ -220,7 +220,7 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
     }
-    else if (adt_choice == "RedBlackTree") {
+    else if (adt_choice == "RedBlackTrees") {
         benchmarkRedBlackTrees();
     }
     else if (adt_choice == "ChainedHashSet") {
