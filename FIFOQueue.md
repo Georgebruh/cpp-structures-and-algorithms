@@ -153,6 +153,8 @@ To validate the efficiency of the `SLLQueue`, the project includes a specialized
 ### 5. Observed Performance Characteristics
 Based on benchmark results, the `SLLQueue` exhibits the following behavior:
 
+![SLL Queue Benchmark](./Assets/FIFOQueue_Performance.jpg)
+
 * **Linear growth (0 to ~450,000 elements):** Time increases steadily as expected from O(n) total work — each enqueue and dequeue is O(1) but cumulative time grows linearly with N.
 * **Heap fragmentation (450,000 to 800,000 elements):** Unlike array-based structures that allocate one contiguous block, the `SLLQueue` allocates one node per element. At large N, this scatters memory across the heap causing cache misses and OS memory management overhead, resulting in increased variance and spikes.
 * **Cache locality disadvantage:** Compared to the `ArrayStack`, the `SLLQueue` is approximately 26x slower at peak due to poor cache locality — nodes are scattered in memory rather than stored contiguously.
