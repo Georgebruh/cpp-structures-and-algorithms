@@ -1,4 +1,4 @@
-# RedBlackTree Implementation Guide
+# Red Black Tree
 
 ### 1. Overview of RedBlackTree
 The `RedBlackTree` is a highly advanced concrete data structure that implements a sorted set. It functions as a self-balancing binary search tree. By assigning a red or black color property to each node it strictly controls its own geometric height ensuring that searching adding and removing data remains lightning fast even with millions of elements.
@@ -6,7 +6,7 @@ The `RedBlackTree` is a highly advanced concrete data structure that implements 
 ### 2. Architectural Components
 The `RedBlackTree` builds upon standard tree foundations while strictly adhering to your repository interfaces to ensure uniform behavior across the codebase.
 
-#### A. The Sorted Set Interface ([`sset.hpp`](./Interfaces/sset.hpp))
+#### A. The `Sorted Set` Interface ([`sset.hpp`](./Interfaces/sset.hpp))
 `RedBlackTree` inherits from a generic template interface class typically called `SSet<T>`. This interface ensures the structure maintains data in a strict sorted order and provides these core methods
 * **add(T x)** Inserts a new element while automatically shifting the branches to maintain the sorted and balanced properties.
 * **remove(T x)** Locates and extracts a specific element and rebalances the remaining structure to close the gap.
@@ -19,7 +19,7 @@ Instead of relying on large contiguous arrays this structure links individual da
 
 ---
 
-### 3. Deep Dive into RedBlackTree Logic ([`red_black_tree.cpp`](./Implementations/red_black_tree.cpp))
+### 3. Deep Dive into `RedBlackTree` Logic ([`red_black_tree.cpp`](./Implementations/red_black_tree.cpp))
 The true brilliance of this structure lies in its automatic maintenance. It follows a strict set of geometric rules to ensure one side of the tree never becomes significantly heavier than the other.
 
 #### The Red Black Rules
@@ -28,7 +28,7 @@ The tree enforces physical balance by following fundamental color laws. The root
 #### Tree Rotations
 When new nodes are added the tree almost always breaks the color rules. To fix this the structure relies on left and right rotations. These functions physically grab a parent and a child node and spin them safely shifting the physical weight of the tree to the left or the right without breaking the mathematical sorted order of the data.
 
-#### The add and remove Fixup Cycles
+#### The `add` and `remove` Fixup Cycles
 Every time you insert or delete an item the tree runs a dedicated repair loop to enforce the rules.
 * **add(T x)** The tree first drops the new element at the very bottom as a red node using standard binary search logic. It then triggers a fixup function that walks back up the tree flipping colors and rotating branches until all the red and black rules are perfectly restored.
 * **remove(T x)** Removing a node leaves a dangerous structural gap. The tree carefully swaps the deleted node with a safe mathematical replacement and triggers a deletion fixup function. This function pulls extra black weight from sibling branches and rotates them until the geometric balance is perfectly even again.
