@@ -8,7 +8,7 @@
 #include "../Implementations/array_deque.cpp"
 #include "../Implementations/meldable_heap.cpp"
 #include "../Implementations/skiplist_sset.cpp"
-#include "../Implementations/red_black_trees.cpp"
+#include "../Implementations/red_black_tree.cpp"
 #include "../Implementations/chained_hash_set.cpp"
 
 void benchmarkArrayStack() {
@@ -137,7 +137,7 @@ void benchmarkMeldableHeap() {
     }
 }
 
-void benchmarkRedBlackTrees() {
+void benchmarkRedBlackTree() {
     for (int N = 1000; N <= 1000000; N += 10000) {
         RedBlackTree<int> tree; 
         
@@ -202,8 +202,8 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
     }
-    else if (adt_choice == "RedBlackTrees") {
-        benchmarkRedBlackTrees();
+    else if (adt_choice == "RedBlackTree") {
+        benchmarkRedBlackTree();
     }
     else if (adt_choice == "ChainedHashSet") {
         benchmarkChainedHashSet();

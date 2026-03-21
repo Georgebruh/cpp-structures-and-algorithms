@@ -19,7 +19,7 @@ ADT_OPTIONS = {
     "Meldable Heap":     "MeldableHeap",
     "Skip List":         "Skiplist",
     "Chained Hash Set":  "ChainedHashSet",
-    "Red Black Trees":    "RedBlackTrees",
+    "Red Black Tree":    "RedBlackTree",
 }
 
 ADT_TITLES = {
@@ -30,7 +30,7 @@ ADT_TITLES = {
     "MeldableHeap":     "Meldable Heap: Enqueue Performance",
     "Skiplist":         "Skip List: Add Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
-    "RedBlackTrees":     "Red Black Trees: Add Performance",
+    "RedBlackTree":     "Red Black Tree: Add Performance",
 }
 
 APP_BG      = '#F8FAFC'
