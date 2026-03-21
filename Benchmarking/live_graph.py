@@ -10,16 +10,27 @@ import os
 # -----------------------------------------------------------------------
 # ADT options — add new ones here as you implement them
 # -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
+# ADT options — add new ones here as you implement them
+# -----------------------------------------------------------------------
 ADT_OPTIONS = {
     "Array Stack":  "ArrayStack",
     "SLL Queue":    "SLLQueue",
     "DL List":     "DLList",
+    "Array Deque":  "ArrayDeque",
+    "Meldable Heap":     "MeldableHeap",
+    "Skip List":         "Skiplist",
+    "Chained Hash Set":  "ChainedHashSet",
 }
 
 ADT_TITLES = {
-    "ArrayStack":   "Array Stack: Bulk Push Performance",
-    "SLLQueue":     "SLL Queue: Enqueue + Dequeue Performance",
-    "DLList":      "DL List: Add + Remove Full Cycle",
+    "ArrayStack":       "Array Stack: Bulk Push Performance",
+    "SLLQueue":         "SLL Queue: Enqueue + Dequeue Performance",
+    "DLList":           "DL List: Add + Remove Full Cycle",
+    "ArrayDeque":   "Array Deque: Both Ends Performance",
+    "MeldableHeap":     "Meldable Heap: Enqueue Performance",
+    "Skiplist":         "Skip List: Add Performance",
+    "ChainedHashSet":   "Chained Hash Set: Add Performance",
 }
 
 APP_BG      = '#F8FAFC'
@@ -46,7 +57,7 @@ def show_selector():
     root.resizable(False, False)
 
     # center the window — height increased to 320 to fit 3 buttons
-    window_width, window_height = 360, 320
+    window_width, window_height = 360, 400
     screen_width  = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width  // 2) - (window_width  // 2)
