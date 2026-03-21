@@ -17,11 +17,11 @@ If the ADT is the blueprint, the Data Structure is the physical building materia
 
 | Abstract Data Type | Core Contract | C++ Implementation | Real-World Application |
 |:---|:---|:---|:---|
-| **[Stack](./Interfaces/list.hpp)** | Last-In-First-Out (LIFO) | [`ArrayStack`](./Implementations/arraystack.cpp) |  |
-| Queue |  | Linked List |  |
+| **[Stack](./Interfaces/list.hpp)** | Last-In-First-Out (LIFO) | [`ArrayStack`](./Implementations/arraystack.cpp) | [`Browser History`](./Applications/ArrayStackapp.cpp)  |
+| **[Queue](./Interfaces/queue.hpp)** | First-In-First-Out (FIFO) | [`Linked List`](./Implementations/sll_queue.cpp) | [`Printing Documents`](./Applications/sll_application.cpp)  |
 | Priority Queue |  | Meldable Heap | |
-| Deque | | Array Deque |  |
-| List |  | DLL List | |
-| Sorted Set | | Red-Black Tree |  |
+| **[Deque](./Interfaces/deque.hpp)** | | [`Array Deque`](./Implementations/array_deque.cpp) |  |
+| **[List](./Interfaces/list.hpp)** |  | [`Array Deque`](./Implementations/arraydeque_list.cpp), [`DL List`](./Implementations/dll_list.cpp)| [`Task Manager (Array Deque)`](./Applications/arraydeque-list_application.cpp), [`Music Player (DL List)`](./Applications/dll_application.cpp) |
+| **[Sorted Set](./Interfaces/sset.hpp)** | | Red-Black Tree, [`Skiplist`](./Implementations/skiplist_sset.cpp) | [`Leaderboard (Skiplist)`](./Applications/skiplist_application.cpp)  |
 | Unsorted Set |  | Chained Hash Table |  |
 | Graph | | Adjacency Matrix |  |
