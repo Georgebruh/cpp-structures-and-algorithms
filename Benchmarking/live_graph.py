@@ -154,7 +154,12 @@ fill_poly = None
 line, = ax.plot([], [], color=LINE_COLOR, linewidth=3)
 
 def init():
-    ax.set_xlim(0, 1100000)
+    # Set the limit to 20,000 for Adjacency Matrix, otherwise 1,100,000
+    if adt_choice == "AdjacencyMatrix":
+        ax.set_xlim(0, 20000)
+    else:
+        ax.set_xlim(0, 1100000)
+        
     ax.set_ylim(0, 0.006)
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{int(x):,}'))
     return line,
