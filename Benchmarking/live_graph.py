@@ -20,6 +20,7 @@ ADT_OPTIONS = {
     "Skip List":         "Skiplist",
     "Chained Hash Set":  "ChainedHashSet",
     "Red Black Tree":    "RedBlackTree",
+    "Adjacency Matrix":  "AdjacencyMatrix",
 }
 
 ADT_TITLES = {
@@ -31,6 +32,7 @@ ADT_TITLES = {
     "Skiplist":         "Skip List: Add Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
     "RedBlackTree":     "Red Black Tree: Add Performance",
+    "AdjacencyMatrix":  "Adjacency Matrix: Add Edge Performance",
 }
 
 APP_BG      = '#F8FAFC'
