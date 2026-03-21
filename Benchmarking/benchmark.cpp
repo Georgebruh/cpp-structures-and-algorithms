@@ -96,6 +96,8 @@ void benchmarkSkiplist() {
         for (int i = 0; i < N; ++i) {
             skiplist.remove(i);
         }
+    }
+}
 
 void benchmarkArrayDeque() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -116,6 +118,7 @@ void benchmarkArrayDeque() {
             deque.removeLast();
         }
     }
+}
   
 void benchmarkMeldableHeap() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -196,13 +199,16 @@ int main(int argc, char* argv[]) {
     
     else if (adt_choice == "ArrayDeque") {
         benchmarkArrayDeque();
+    }
         
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
     }
+
     else if (adt_choice == "ChainedHashSet") {
         benchmarkChainedHashSet();
     }
+    
     else {
     // ...
         // If Python sends a name we haven't built yet, throw an error
