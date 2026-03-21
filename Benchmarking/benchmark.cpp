@@ -4,6 +4,7 @@
 #include "../Implementations/arraystack.cpp"
 #include "../Implementations/sll_queue.cpp"
 #include "../Implementations/dll_list.cpp"
+#include "../Implementations/array_deque.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -71,11 +72,37 @@ void benchmarkDLList() {
     }    
 }
 
+void benchmarkArrayDeque() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+
+        ArrayDeque<int> deque;
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        // add N elements split between the front and the back
+        for (int i = 0; i < N / 2; ++i) {
+            deque.addLast(i);
+            deque.addFirst(i);
+        }
+
+        // remove all N elements from both ends
+        for (int i = 0; i < N / 2; ++i) {
+            deque.removeFirst();
+            deque.removeLast();
+        }
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
 int main(int argc, char* argv[]) {
     // 1. Ensure an argument was provided
     if (argc < 2) {
-        std::cerr << "Error: No data structure specified.\n";
-        std::cerr << "Usage: .\\benchmark.exe [Stack|Queue|...]\n";
+        std::cerr << "Error No data structure specified.\n";
+        std::cerr << "Usage .\\benchmark.exe [Stack|Queue|...]\n";
         return 1;
     }
 
@@ -92,9 +119,12 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "DLList") {
         benchmarkDLList();
     }
+    else if (adt_choice == "ArrayDeque") {
+        benchmarkArrayDeque();
+    }
     else {
         // If Python sends a name we haven't built yet, throw an error
-        std::cerr << "Error: Unknown data structure '" << adt_choice << "'.\n";
+        std::cerr << "Error Unknown data structure '" << adt_choice << "'.\n";
         return 1;
     }
 
