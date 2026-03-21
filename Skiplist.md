@@ -157,6 +157,7 @@ To validate the efficiency of the `Skiplist`, the project includes a specialized
 ### 6. Observed Performance Characteristics
 The Skiplist's O(log n) per operation means the total benchmark time for N operations is O(n log n):
 
+![Skiplist Benchmark](./Assets/Skiplist_Performance.png)
 
 * **Smooth growth phase:** Unlike the DLList and SLLQueue, the Skiplist's O(log n) per operation means it scales much better — each doubling of N only adds a small constant amount of extra work per operation.
 * **Heap fragmentation phase:** Like all node-based structures, individual node allocation eventually causes memory scattering and cache misses at large N.
