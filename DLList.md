@@ -23,14 +23,14 @@ Instead of relying on a contiguous array, the `DLList` uses a custom `DLLNode<T>
 The list uses a circular dummy sentinel node — `dummy->next` points to the first real node and `dummy->prev` points to the last:
 
 ```mermaid
-graph LR
-    DUMMY(dummy) -->|next| A
-    A["[A]"] -->|next| B["[B]"]
+flowchart LR
+    DUMMY(dummy) -->|next| A["[A]"]
+    A -->|next| B["[B]"]
     B -->|next| C["[C]"]
-    C -->|next| DUMMY
-    C -->|prev| B
     B -->|prev| A
+    C -->|prev| B
     A -->|prev| DUMMY
+    C -->|next| DUMMY
     style DUMMY fill:#8B5CF6,color:#fff
 ```
 
@@ -46,7 +46,7 @@ The key design decision in `DLList` is using a **dummy/sentinel head node**:
 * An empty list looks like this:
 
 ```mermaid
-graph LR
+flowchart LR
     DUMMY(dummy) -->|next| DUMMY
     DUMMY -->|prev| DUMMY
     style DUMMY fill:#8B5CF6,color:#fff
@@ -127,17 +127,6 @@ To validate the efficiency of the `DLList`, the project includes a specialized b
 
 ### 5. Observed Performance Characteristics
 Based on benchmark results, the `DLList` exhibits the following behavior:
-
-```mermaid
-graph LR
-    A[0 to 500k elements] -->|linear O n growth| B[500k to 800k elements]
-    B -->|heap fragmentation + spikes| C[800k to 1M elements]
-    C -->|OS memory reorganization| D[partial stabilization]
-    style A fill:#bbf7d0,color:#14532d
-    style B fill:#fde68a,color:#78350f
-    style C fill:#fca5a5,color:#7f1d1d
-    style D fill:#fde68a,color:#78350f
-```
 
 * **Linear growth (0 to ~500,000 elements):** Time increases steadily — `add(i, i)` requires traversal to index `i` each time, so cumulative time grows as O(n²) in total but appears linear per iteration.
 * **Heap fragmentation (500,000 to 800,000 elements):** Each node is individually allocated, scattering memory across the heap. At large N this causes cache misses, OS memory management overhead, and significant spikes.
