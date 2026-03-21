@@ -9,7 +9,9 @@
 #include "../Implementations/array_deque.cpp"
 #include "../Implementations/meldable_heap.cpp"
 #include "../Implementations/skiplist_sset.cpp"
+#include "../Implementations/red_black_tree.cpp"
 #include "../Implementations/chained_hash_set.cpp"
+#include "../Implementations/adjacency_matrix.cpp"
 
 void benchmarkArrayStack() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -127,9 +129,10 @@ void benchmarkSkiplist() {
             skiplist.remove(i);
         }
 
-        auto end = std::chrono::high_resolution_clock::now();                  
-        std::chrono::duration<double> duration = end - start;                 
-        std::cout << N << "," << duration.count() << "\n"; 
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
     }
 }
 
@@ -164,8 +167,21 @@ void benchmarkMeldableHeap() {
         MeldableHeap<int> pq; 
         auto start = std::chrono::high_resolution_clock::now();
 
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
+void benchmarkRedBlackTree() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+        RedBlackTree<int> tree; 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
         for (int i = 0; i < N; ++i) {
-            pq.enqueue(i);
+            tree.add(i);
         }
         
         auto end = std::chrono::high_resolution_clock::now();
@@ -190,6 +206,23 @@ void benchmarkChainedHashSet() {
         std::chrono::duration<double> duration = end - start;
 
         std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
+void benchmarkAdjacencyMatrix() {
+    for (int N = 1000; N <= 20000; N += 1000) {
+        AdjacencyMatrix graph(N); 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
+        for (int i = 0; i < N - 1; ++i) {
+            graph.addEdge(i, i + 1);
+        }
+        
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << std::endl;
     }
 }
 
@@ -222,12 +255,18 @@ int main(int argc, char* argv[]) {
     }
     else if (adt_choice == "ArrayDeque") {
         benchmarkArrayDeque();
-    }        
+    }   
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
     }
+    else if (adt_choice == "RedBlackTree") {
+        benchmarkRedBlackTree();
+    }
     else if (adt_choice == "ChainedHashSet") {
         benchmarkChainedHashSet();
+    }
+    else if (adt_choice == "AdjacencyMatrix") {
+        benchmarkAdjacencyMatrix();
     }
     else {
     // ...

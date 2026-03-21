@@ -12,15 +12,17 @@ import os
 # -----------------------------------------------------------------------
 # ADT options — add new ones here as you implement them
 # -----------------------------------------------------------------------
+
 ADT_OPTIONS = {
-    "Array Stack":      "ArrayStack",
-    "SLL Queue":        "SLLQueue",
-    "DL List":          "DLList",
-    "Array Deque":      "ArrayDeque",
-    "Array Deque List": "ArrayDequeList",
-    "Meldable Heap":    "MeldableHeap",
-    "Skip List":        "Skiplist",
-    "Chained Hash Set": "ChainedHashSet",
+    "Array Stack":       "ArrayStack",
+    "SLL Queue":         "SLLQueue",
+    "DL List":           "DLList",
+    "Array Deque":       "ArrayDeque",
+    "Meldable Heap":     "MeldableHeap",
+    "Skip List":         "Skiplist",
+    "Chained Hash Set":  "ChainedHashSet",
+    "Red Black Tree":    "RedBlackTree",
+    "Adjacency Matrix":  "AdjacencyMatrix",
 }
 
 ADT_TITLES = {
@@ -32,6 +34,8 @@ ADT_TITLES = {
     "MeldableHeap":     "Meldable Heap: Enqueue Performance",
     "Skiplist":         "Skip List: Add + Search + Remove Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
+    "RedBlackTree":     "Red Black Tree: Add Performance",
+    "AdjacencyMatrix":  "Adjacency Matrix: Add Edge Performance",
 }
 
 APP_BG      = '#F8FAFC'
@@ -70,7 +74,8 @@ def show_selector():
     root.configure(bg=APP_BG)
     root.resizable(False, False)
 
-    window_width, window_height = 360, 400
+    # center the window — increased height to handle Windows display scaling
+    window_width, window_height = 360, 550
     screen_width  = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width  // 2) - (window_width  // 2)
@@ -162,7 +167,12 @@ fill_poly = None
 line, = ax.plot([], [], color=LINE_COLOR, linewidth=3)
 
 def init():
-    ax.set_xlim(0, 1_100_000)
+    # Set the limit to 20,000 for Adjacency Matrix, otherwise 1,100,000
+    if adt_choice == "AdjacencyMatrix":
+        ax.set_xlim(0, 20000)
+    else:
+        ax.set_xlim(0, 1100000)
+        
     ax.set_ylim(0, 0.006)
     ax.xaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{int(x):,}'))
     return line,
