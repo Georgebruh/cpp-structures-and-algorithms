@@ -3,7 +3,7 @@
 #include "../Implementations/array_deque.cpp"
 
 int main() {
-    std::cout << "=== Array Deque Application VIP Queue Manager ===" << std::endl << std::endl;
+    std::cout << "=== VIP Queue Manager ===" << std::endl << std::endl;
 
     ArrayDeque<std::string> boardingQueue;
 
