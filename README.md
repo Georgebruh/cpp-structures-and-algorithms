@@ -17,11 +17,11 @@ If the ADT is the blueprint, the Data Structure is the physical building materia
 
 | Abstract Data Type | Core Contract | C++ Implementation | Real-World Application |
 |:---|:---|:---|:---|
-| **[Stack](./Interfaces/list.hpp)** | Last-In-First-Out (LIFO) | [`ArrayStack`](./Implementations/arraystack.cpp) |  |
-| Queue |  | Linked List |  |
-| Priority Queue |  | Meldable Heap | |
-| Deque | | Array Deque |  |
-| List |  | DLL List | |
-| Sorted Set | | Red-Black Tree |  |
-| Unsorted Set |  | Chained Hash Table |  |
-| Graph | | Adjacency Matrix |  |
+| **[Stack](./Interfaces/list.hpp)** | Last-In-First-Out (LIFO) | [`ArrayStack`](./Implementations/arraystack.cpp) | Undo/Redo features, Browser history back button |
+| **[Queue](./Interfaces/queue.hpp)** | First-In-First-Out (FIFO) | [`SLL Queue`](./Implementations/sll_queue.cpp) | Printer job scheduling, Web server request management |
+| **Priority Queue** | Highest priority element is removed first | [`Meldable Heap`](./Implementations/meldable_heap.cpp) | Operating system task scheduling, Dijkstra's algorithm |
+| **[Deque](./Interfaces/deque.hpp)** | Double-ended queue; insert/remove at both ends | [`Array Deque`](./Implementations/array_deque.cpp) | Palindrome checking, Stealing jobs in multiprocessor scheduling |
+| **[List](./Interfaces/list.hpp)** | Ordered sequence of elements with positional access | [`DLL List`](./Implementations/dll_list.cpp) | Music player playlists, Image carousels |
+| **[Sorted Set](./Interfaces/sset.hpp)** | Collection of unique elements maintained in sorted order | [`SkipList SSet`](./Implementations/skiplist_sset.cpp) | Leaderboards, Database indexing for range queries |
+| **Unsorted Set** | Collection of unique elements in no particular order | [`Chained Hash Set`](./Implementations/chained_hash_set.cpp) | Spell checker dictionaries, Fast duplicate detection |
+| **Graph** | Collection of vertices (nodes) and edges (connections) | Adjacency Matrix / List | Social network connections, GPS map routing |
