@@ -57,7 +57,7 @@ int main() {
                     std::cout << ">>> NO. No direct flight exists for that route.\n";
                 }
             } catch (...) {
-                std::cout << ">>> Error Invalid city code entered.\n";
+                std::cout << ">>> Error: Invalid city code entered.\n";
             }
         } else if (choice == 2) {
             int origin;
@@ -75,7 +75,7 @@ int main() {
                     }
                 }
             } catch (...) {
-                std::cout << ">>> Error Invalid city code entered.\n";
+                std::cout << ">>> Error: Invalid city code entered.\n";
             }
         } else if (choice == 3) {
             int origin;
@@ -89,7 +89,7 @@ int main() {
                 flightMap.addEdge(origin, destination);
                 std::cout << ">>> Success. New direct flight added from " << getCityName(origin) << " to " << getCityName(destination) << ".\n";
             } catch (...) {
-                std::cout << ">>> Error Invalid city code entered.\n";
+                std::cout << ">>> Error: Invalid city code entered.\n";
             }
         } else {
             std::cout << "Invalid choice. Please try again.\n";
