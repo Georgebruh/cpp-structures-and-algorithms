@@ -19,6 +19,7 @@ ADT_OPTIONS = {
     "Meldable Heap":     "MeldableHeap",
     "Skip List":         "Skiplist",
     "Chained Hash Set":  "ChainedHashSet",
+    "Red Black Trees":    "RedBlackTrees",
 }
 
 ADT_TITLES = {
@@ -29,6 +30,7 @@ ADT_TITLES = {
     "MeldableHeap":     "Meldable Heap: Enqueue Performance",
     "Skiplist":         "Skip List: Add Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
+    "RedBlackTrees":     "Red Black Trees: Add Performance",
 }
 
 APP_BG      = '#F8FAFC'
@@ -54,8 +56,8 @@ def show_selector():
     root.configure(bg=APP_BG)
     root.resizable(False, False)
 
-    # center the window — height increased to 320 to fit 3 buttons
-    window_width, window_height = 360, 400
+    # center the window — increased height to handle Windows display scaling
+    window_width, window_height = 360, 550
     screen_width  = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
     x = (screen_width  // 2) - (window_width  // 2)

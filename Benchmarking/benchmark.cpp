@@ -137,24 +137,6 @@ void benchmarkMeldableHeap() {
     }
 }
 
-void benchmarkSkiplist() {
-    for (int N = 1000; N <= 1000000; N += 10000) {
-        Skiplist<int> set; 
-        
-        auto start = std::chrono::high_resolution_clock::now();
-
-        // Add N elements
-        for (int i = 0; i < N; ++i) {
-            set.add(i);
-        }
-        
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> duration = end - start;
-
-        std::cout << N << "," << duration.count() << "\n";
-    }
-}
-
 void benchmarkRedBlackTrees() {
     for (int N = 1000; N <= 1000000; N += 10000) {
         RedBlackTree<int> tree; 

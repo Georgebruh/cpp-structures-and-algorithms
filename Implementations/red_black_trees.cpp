@@ -7,9 +7,11 @@ enum NodeColor { RED, BLACK };
 template <typename T>
 struct RBNode : public BTNode<T> {
     NodeColor color;
+    RBNode<T>* parent;
 
     RBNode(T val) : BTNode<T>(val) {
         color = RED;
+        parent = nullptr;
     }
 };
 
@@ -19,6 +21,7 @@ protected:
     RBNode<T>* root;
     int count;
 
+    // Helper to safely cast standard binary tree nodes into red black nodes
     RBNode<T>* rb(BTNode<T>* node) const {
         return static_cast<RBNode<T>*>(node);
     }
@@ -28,14 +31,14 @@ protected:
         pt->right = pt_right->left;
 
         if (pt->right != nullptr) {
-            pt->right->parent = pt;
+            rb(pt->right)->parent = pt;
         }
 
         pt_right->parent = pt->parent;
 
         if (pt->parent == nullptr) {
             root = pt_right;
-        } else if (pt == rb(pt->parent)->left) {
+        } else if (pt == rb(pt->parent->left)) {
             pt->parent->left = pt_right;
         } else {
             pt->parent->right = pt_right;
@@ -50,14 +53,14 @@ protected:
         pt->left = pt_left->right;
 
         if (pt->left != nullptr) {
-            pt->left->parent = pt;
+            rb(pt->left)->parent = pt;
         }
 
         pt_left->parent = pt->parent;
 
         if (pt->parent == nullptr) {
             root = pt_left;
-        } else if (pt == rb(pt->parent)->left) {
+        } else if (pt == rb(pt->parent->left)) {
             pt->parent->left = pt_left;
         } else {
             pt->parent->right = pt_left;
@@ -71,11 +74,11 @@ protected:
         RBNode<T>* parent_pt = nullptr;
         RBNode<T>* grand_parent_pt = nullptr;
 
-        while ((pt != root) && (pt->color != BLACK) && (rb(pt->parent)->color == RED)) {
-            parent_pt = rb(pt->parent);
-            grand_parent_pt = rb(pt->parent->parent);
+        while ((pt != root) && (pt->color != BLACK) && (pt->parent->color == RED)) {
+            parent_pt = pt->parent;
+            grand_parent_pt = pt->parent->parent;
 
-            if (parent_pt == grand_parent_pt->left) {
+            if (parent_pt == rb(grand_parent_pt->left)) {
                 RBNode<T>* uncle_pt = rb(grand_parent_pt->right);
 
                 if (uncle_pt != nullptr && uncle_pt->color == RED) {
@@ -84,10 +87,10 @@ protected:
                     uncle_pt->color = BLACK;
                     pt = grand_parent_pt;
                 } else {
-                    if (pt == parent_pt->right) {
+                    if (pt == rb(parent_pt->right)) {
                         rotateLeft(parent_pt);
                         pt = parent_pt;
-                        parent_pt = rb(pt->parent);
+                        parent_pt = pt->parent;
                     }
                     rotateRight(grand_parent_pt);
                     NodeColor t = parent_pt->color;
@@ -104,10 +107,10 @@ protected:
                     uncle_pt->color = BLACK;
                     pt = grand_parent_pt;
                 } else {
-                    if (pt == parent_pt->left) {
+                    if (pt == rb(parent_pt->left)) {
                         rotateRight(parent_pt);
                         pt = parent_pt;
-                        parent_pt = rb(pt->parent);
+                        parent_pt = pt->parent;
                     }
                     rotateLeft(grand_parent_pt);
                     NodeColor t = parent_pt->color;
@@ -125,10 +128,10 @@ protected:
 
         if (pt->data < currentNode->data) {
             currentNode->left = insertBST(rb(currentNode->left), pt);
-            currentNode->left->parent = currentNode;
+            rb(currentNode->left)->parent = currentNode;
         } else if (pt->data > currentNode->data) {
             currentNode->right = insertBST(rb(currentNode->right), pt);
-            currentNode->right->parent = currentNode;
+            rb(currentNode->right)->parent = currentNode;
         }
         return currentNode;
     }
