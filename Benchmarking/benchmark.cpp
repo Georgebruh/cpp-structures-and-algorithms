@@ -8,6 +8,7 @@
 #include "../Implementations/array_deque.cpp"
 #include "../Implementations/meldable_heap.cpp"
 #include "../Implementations/skiplist_sset.cpp"
+#include "../Implementations/red_black_trees.cpp"
 #include "../Implementations/chained_hash_set.cpp"
 
 void benchmarkArrayStack() {
@@ -96,6 +97,8 @@ void benchmarkSkiplist() {
         for (int i = 0; i < N; ++i) {
             skiplist.remove(i);
         }
+    }
+}
 
 void benchmarkArrayDeque() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -116,6 +119,7 @@ void benchmarkArrayDeque() {
             deque.removeLast();
         }
     }
+}
   
 void benchmarkMeldableHeap() {
     for (int N = 1000; N <= 1000000; N += 10000) {
@@ -142,6 +146,23 @@ void benchmarkSkiplist() {
         // Add N elements
         for (int i = 0; i < N; ++i) {
             set.add(i);
+        }
+        
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> duration = end - start;
+
+        std::cout << N << "," << duration.count() << "\n";
+    }
+}
+
+void benchmarkRedBlackTrees() {
+    for (int N = 1000; N <= 1000000; N += 10000) {
+        RedBlackTree<int> tree; 
+        
+        auto start = std::chrono::high_resolution_clock::now();
+
+        for (int i = 0; i < N; ++i) {
+            tree.add(i);
         }
         
         auto end = std::chrono::high_resolution_clock::now();
@@ -193,12 +214,14 @@ int main(int argc, char* argv[]) {
     else if (adt_choice == "Skiplist") {
         benchmarkSkiplist();
     }
-    
     else if (adt_choice == "ArrayDeque") {
         benchmarkArrayDeque();
-        
+    }   
     else if (adt_choice == "MeldableHeap") {
         benchmarkMeldableHeap();
+    }
+    else if (adt_choice == "RedBlackTrees") {
+        benchmarkRedBlackTrees();
     }
     else if (adt_choice == "ChainedHashSet") {
         benchmarkChainedHashSet();
