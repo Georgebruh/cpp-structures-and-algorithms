@@ -13,6 +13,19 @@ The `MeldableHeap` integrates into the repository's ecosystem by swapping out th
 
 ---
 
+### Complexity Snapshot
+| Operation | Expected Time Complexity | Worst-Case Time |
+| :--- | :--- | :--- |
+| `enqueue(x)` | $O(\log n)$ | $O(n)$ |
+| `dequeue()` | $O(\log n)$ | $O(n)$ |
+| `meld(h1, h2)` | $O(\log n)$ | $O(n)$ |
+| `peek()` | $O(1)$ | $O(1)$ |
+| Space | $O(n)$ | $O(n)$ |
+
+
+
+
+
 ### 3. Core Logic: The `meld` Operation
 
 In a Meldable Heap, every primary operation is simply a byproduct of the master `meld(h1, h2)` function. This function takes the root nodes of two separate heaps and weaves them together into a single, valid Max-Heap.
@@ -138,14 +151,17 @@ When running the benchmarking suite (`live_graph.py`), the resulting visual grap
 
 ---
 
-### 5. Real-World Application: ER Triage System
+### 5. Performance Testing & Benchmarking 
+To validate the efficiency of the `MeldableHeap`, the project pipes live execution times from the C++ benchmarking script into a Python visualization tool (`live_graph.py`). This triggers a stress test by sequentially enqueueing elements from 0 up to 1,000,000.
 
-To demonstrate the practical utility of a Priority Queue backed by a Meldable Heap, this repository includes an Emergency Room Triage application (`pq_application.cpp`).
+#### Understanding the Benchmark Graph
+Below is the live performance graph generated during a high-volume stress test of the Priority Queue.
 
-In a standard Queue (FIFO), patients would be treated strictly in the order they arrived. However, in a medical emergency, a patient arriving with a heart attack must bypass the waiting room and be treated before someone who arrived hours earlier with a mild fever.
+<p align="center">
+  <img src="./Assets/MH.png" alt="Meldable Heap Performance Graph" width="800"/>
+</p>
 
-**How it works:**
-* The application defines a custom `Patient` struct containing a `name` and a `severity` score (1-10).
-* It overrides the `<` operator so the Meldable Heap knows how to compare two `Patient` objects based solely on their severity score.
-* As patients are enqueued, the `meld` operation automatically weaves the most critical patients to the root pointer.
-* When the doctor calls `dequeue()`, the system guarantees the patient with the highest severity score is extracted first, regardless of their arrival time.
+**What this graph tells us about the code:**
+* **The Logarithmic Curve ($O(\log n)$ Time):** Unlike a Stack or Hash Set which have perfectly flat $O(1)$ trendlines, a Priority Queue must actually sort and weave data. As the tree gets larger, it takes slightly longer to traverse down to the bottom. However, because $\log_2(1,000,000)$ is only about 20 steps, the time penalty grows incredibly slowly, resulting in a graph that stays phenomenally low and stable even at massive scale!
+* **The "Noise" (Randomized Balancing):** You might notice the line isn't perfectly smooth; it has a lot of micro-jitter. This visually proves the "Randomized Coin Flip" logic in action! Because the `meld()` function uses a random number generator to decide whether to merge left or right, some insertions get lucky and finish instantly, while others traverse slightly deeper.
+* **The Master Operation:** While this graph tests `enqueue()`, remember that in this structure, `enqueue()`, `dequeue()`, and merging two massive heaps together all rely on the exact same underlying `meld()` function. This graph proves that *all* of those operations operate in that highly efficient $O(\log n)$ band.
