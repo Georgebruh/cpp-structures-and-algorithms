@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <stdexcept>
 #include <cstdlib> // For rand()
 #include "../Interfaces/queue.hpp"
@@ -33,12 +34,25 @@ private:
         return h1;
     }
 
-    // Helper to recursively delete nodes and prevent memory leaks
+   // Helper to iteratively delete nodes and prevent memory leaks
     void destroyTree(BTNode<T>* node) {
-        if (node) {
-            destroyTree(node->left);
-            destroyTree(node->right);
-            delete node;
+        if (node == nullptr) return;
+        
+        std::vector<BTNode<T>*> stack;
+        stack.push_back(node);
+        
+        while (!stack.empty()) {
+            BTNode<T>* current = stack.back();
+            stack.pop_back();
+            
+            if (current->left != nullptr) {
+                stack.push_back(current->left);
+            }
+            if (current->right != nullptr) {
+                stack.push_back(current->right);
+            }
+            
+            delete current;
         }
     }
 
