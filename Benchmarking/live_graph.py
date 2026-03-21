@@ -1,4 +1,6 @@
 import subprocess
+import queue
+import threading
 import matplotlib
 matplotlib.use('TkAgg')  # must be before any other matplotlib import
 import matplotlib.pyplot as plt
@@ -28,8 +30,9 @@ ADT_TITLES = {
     "SLLQueue":         "SLL Queue: Enqueue + Dequeue Performance",
     "DLList":           "DL List: Add + Remove Full Cycle",
     "ArrayDeque":       "Array Deque: Both Ends Performance",
+    "ArrayDequeList": "Array Deque List: Add + Get + Remove Performance",
     "MeldableHeap":     "Meldable Heap: Enqueue Performance",
-    "Skiplist":         "Skip List: Add Performance",
+    "Skiplist":         "Skip List: Add + Search + Remove Performance",
     "ChainedHashSet":   "Chained Hash Set: Add Performance",
     "RedBlackTree":     "Red Black Tree: Add Performance",
     "AdjacencyMatrix":  "Adjacency Matrix: Add Edge Performance",
@@ -44,6 +47,19 @@ GRID_COLOR  = '#F1F5F9'
 BTN_BG      = '#8B5CF6'
 BTN_FG      = '#FFFFFF'
 BTN_HOVER   = '#7C3AED'
+
+# -----------------------------------------------------------------------
+# Shared queue — module level so both read_output() and update() see it
+# -----------------------------------------------------------------------
+data_queue = queue.Queue()
+
+# -----------------------------------------------------------------------
+# Background reader thread — pushes each CSV line into data_queue
+# so readline() never blocks the UI event loop
+# -----------------------------------------------------------------------
+def read_output(proc):
+    for line in proc.stdout:
+        data_queue.put(line)
 
 # -----------------------------------------------------------------------
 # Popup selector window
@@ -66,7 +82,6 @@ def show_selector():
     y = (screen_height // 2) - (window_height // 2)
     root.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-    # title label
     tk.Label(
         root,
         text="DSA Benchmarker",
@@ -75,7 +90,6 @@ def show_selector():
         fg=TITLE_COLOR
     ).pack(pady=(30, 4))
 
-    # subtitle label
     tk.Label(
         root,
         text="Select a data structure to benchmark",
@@ -84,7 +98,6 @@ def show_selector():
         fg=TEXT_COLOR
     ).pack(pady=(0, 24))
 
-    # one button per ADT
     for label, key in ADT_OPTIONS.items():
         btn = tk.Button(
             root,
@@ -110,11 +123,9 @@ def show_selector():
 # -----------------------------------------------------------------------
 adt_choice = show_selector()
 
-# if user closes the popup without choosing, exit cleanly
 if not adt_choice:
     exit(0)
 
-# run benchmark.exe and pipe its output into this script
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 process = subprocess.Popen(
@@ -124,8 +135,11 @@ process = subprocess.Popen(
     text=True
 )
 
+reader_thread = threading.Thread(target=read_output, args=(process,), daemon=True)
+reader_thread.start()
+
 # -----------------------------------------------------------------------
-# Graph setup
+# Graph setup — all configuration BEFORE plt.show() so nothing is stale
 # -----------------------------------------------------------------------
 plt.rcParams['font.family'] = 'sans-serif'
 plt.rcParams['font.sans-serif'] = ['Century Gothic', 'Trebuchet MS', 'Arial Rounded MT Bold', 'sans-serif']
@@ -134,7 +148,6 @@ fig, ax = plt.subplots(figsize=(10, 6))
 fig.patch.set_facecolor(APP_BG)
 ax.set_facecolor(CHART_BG)
 
-plt.show(block=False)
 if fig.canvas.manager is not None:
     fig.canvas.manager.set_window_title("DSA Benchmarker")
 
@@ -167,38 +180,33 @@ def init():
 def update(frame):
     global fill_poly
 
-    # read from the benchmark process instead of stdin
-    if process.stdout is not None:
-        line_str = process.stdout.readline()
-    else:
+    # Read only ONE point per frame so the line always animates gradually
+    try:
+        line_str = data_queue.get_nowait()
+        n_str, t_str = line_str.strip().split(',')
+        x_data.append(float(n_str))
+        y_data.append(float(t_str))
+    except queue.Empty:
+        return line,
+    except ValueError:
         return line,
 
-    if line_str:
-        try:
-            n_str, t_str = line_str.strip().split(',')
-            n = float(n_str)
-            t = float(t_str)
+    line.set_data(x_data, y_data)
+    ax.set_ylim(0, max(y_data) * 1.2)
 
-            x_data.append(n)
-            y_data.append(t)
+    if fill_poly is not None:
+        fill_poly.remove()
+    fill_poly = ax.fill_between(x_data, y_data, 0, color=LINE_COLOR, alpha=0.15)
 
-            line.set_data(x_data, y_data)
-
-            ax.set_ylim(0, max(y_data) * 1.2)  # auto scale y axis
-
-            # only redraw fill every 10 frames to reduce lag
-            if len(x_data) % 10 == 0:
-                if fill_poly is not None:
-                    fill_poly.remove()
-                fill_poly = ax.fill_between(x_data, y_data, 0, color=LINE_COLOR, alpha=0.15)
-
-        except ValueError:
-            pass
+    fig.canvas.draw_idle()
 
     return line,
 
-# interval at 50ms (20 FPS) to keep things smooth without lag
-ani = animation.FuncAnimation(fig, update, init_func=init, blit=False, interval=50, cache_frame_data=False)
+# Adjust interval (ms) to control animation speed — higher = slower
+ani = animation.FuncAnimation(
+    fig, update, init_func=init,
+    blit=False, interval=80, cache_frame_data=False
+)
 
 plt.tight_layout()
 plt.show()
